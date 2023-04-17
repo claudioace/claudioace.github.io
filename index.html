@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+</head>
+<body>
+    <div id="container">
+        <div id="section-a">
+            <h2>Sección A</h2>
+            <input type="file" id="image-input">
+
+            <div id="sliderCtn">
+                <input type="range" id="slider" min="5" max="90" value="5" >
+            </div>
+            <!--  
+            <textarea id="data-box"></textarea>
+            -->
+            <button onclick="crearFoco()">Agregar Foco</button>
+            <button onclick="eliminarUltimoFoco()" class = "btnEliminar">Eliminar ultimo foco</button>
+        </div>
+
+        <div id="divider">
+            <div id="drag-bar"></div>
+        </div>
+
+        <div id="section-b">
+            <h2>Sección B</h2>
+            
+            <div id="foco0" class="focus-image-clip active"></div>
+        </div>
+    </div>
+        
+        
+    <script src="./js/app.js"></script>
+</body>
+</html>
