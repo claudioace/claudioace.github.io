@@ -19,6 +19,7 @@ max-width: 40%;
 background-color: #eee;
 display: flex;
 flex-direction: column;
+z-index: 10;
 }
 
 /* Estilos para la sección B */
@@ -26,6 +27,7 @@ flex-direction: column;
 flex: 1;
 background-color: #000;
 position:relative;
+clip-path: margin-box;
 }
 
 /* Estilos para la barra divisoria */
