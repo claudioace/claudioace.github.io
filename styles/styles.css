@@ -1,96 +1,164 @@
-*{
-box-sizing: border-box;
-margin: 0;
-padding: 0;
-} 
-/* Estilos para el contenedor principal */
-#container {
-display: flex;
-width: 100%;
-height: 100vh;
-background-color: #000;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+#granContenedor {
+  display: flex;
+  flex-direction: row;
+  min-height: 100%;
+  min-width: 100%;
+}
+#sectionB {
+  flex: 1;
+  min-width: calc(100vw - 100px);
+  min-height: 100vh;
+  background-color: black;
+  position: relative;
+  overflow: hidden;
 
-/* Estilos para la sección A */
-#section-a {
-width:10%;
-min-width: 5%;
-max-width: 40%;
-background-color: #eee;
-display: flex;
-flex-direction: column;
-z-index: 10;
 }
+/*---Estilos para el foco-----*/
 
-/* Estilos para la sección B */
-#section-b {
-flex: 1;
-background-color: #000;
-position:relative;
-clip-path: margin-box;
+.focus {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border:none;
+  background-repeat: no-repeat;
+  /*background-attachment:fixed;*/
+  opacity: 100%;
+  cursor:grab;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed white;
+  background-position: (0 0);
 }
-
-/* Estilos para la barra divisoria */
-#divider {
-width: 5px;
-background-color: #ccc;
-cursor: col-resize;
-}
-
-#drag-bar {
-height: 100%;
-background-color: #ccc;
-}
-
-.focus-image-clip {
-position: absolute;
-/*
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-*/
-width: 20px;
-height: 20px;
-border-radius: 50%;
-background-repeat: no-repeat;
-border:none;
-background-attachment: fixed;
-opacity: 70%;
-}
-.focus-image-clip:hover{
-    cursor:grab;
-}
-
+.minifocus {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border:none;
+  opacity: 50%;
+}  
 .active{
-    opacity: 100%;
-    border: solid 1px yellow;
+  border: solid 1px yellow;
 }
 
-#sliderCtn{
-height: 80%;
-border: solid 1px red;
-position:relative;
+.focus .active{
+  border: none;
+}
+/*fin estilos para el foco*/
+
+
+
+
+#sectionAside,
+#sectionA {
+  height: 100%;
+  width: 100px;
+  background-color: grey;
+  padding: 5px;
+}
+
+.flotante {
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+.flexCtn {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+/*Estilos para el boton imageinput y todos sus elementos*/
+.file-upload {
+  position: relative;
+  display: inline-block;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #333;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.hidden-input {
+  margin: 10px 0; 
+  display: none;
+}
+
+.button {
+  display: inline-block;
+  margin: 0;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: wrap;
+  padding: 1px;
+  font-size: 14px;
+  line-height: 1.4;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  
+}
+
+.label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+/*-----------------*/
+/*Estilos para el Slider*/
+
+.sliderCtn {
+  height: 80%;
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  padding-bottom: 20px;
 }
 
 #slider {
--webkit-appearance: slider-vertical; 
-writing-mode: vertical-rl; 
-width: 20px;
-height: 80%; 
-position: absolute; 
-top: 50%; 
-left: 50%; 
-transform: translate(-50%, -50%); 
+  -webkit-appearance: slider-vertical;
+  writing-mode: vertical-rl;
+  width: 20px;
+  height: 80%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
+#slider2{
+  position: relative;
+  bottom:0;
+}
+/*-------------------------------*/
 
-
+.botonesCtn{
+  display: flex;
+  flex-direction: column;
+}
 button{
-    height: 5%;
-    margin: 10px 0;
-}
-.btnEliminar{
-    background-color: red;
-    color:#eee;
-    height: 3%;
+ height: 40px
 }

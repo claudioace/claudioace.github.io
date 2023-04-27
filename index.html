@@ -4,37 +4,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fog of War v3</title>
     <link rel="stylesheet" href="./styles/styles.css">
 </head>
 <body>
-    <div id="container">
-        <div id="section-a">
-            <h2>Configuraciones</h2>
-            <input type="file" id="image-input">
-
-            <div id="sliderCtn">
-                <input type="range" id="slider" min="5" max="90" value="5" >
+    <div class="sectionCtn" id = "granContenedor">
+        <main id = "sectionB">
+            <div id="foco0" class="focus active">
+                <!-- Se ignora Minifoco hasta resolver desplazamiento
+                <div id="minifoco0" class="focus minifocus active"></div>
+                -->
             </div>
-            <!--  
-            <textarea id="data-box"></textarea>
-            -->
-            <button onclick="crearFoco()">Agregar Foco</button>
-            <button onclick="eliminarUltimoFoco()" class = "btnEliminar">Eliminar ultimo foco</button>
-        </div>
 
-        <div id="divider">
-            <div id="drag-bar"></div>
-        </div>
+        </main>
+        <aside id = "sectionAside"></aside><!--Este aside solo sirve para reservar el espacio del elemento fixed-->
+        <nav class="navbar flotante" id="sectionA">
+            <div class="flexCtn">
+                <section class = "cargarImgCtn">
+                    <label for="image-input" class="file-upload">
+                        <span class="button">Seleccionar archivo</span>
+                        <span class="label">Ningún archivo seleccionado</span>
+                      </label>
+                      <input type="file" accept="image/*" id="image-input" class="hidden-input">
 
-        <div id="section-b">
-            <h2></h2>
-            
-            <div id="foco0" class="focus-image-clip active"></div>
-        </div>
+                </section>
+    
+                <section class = "sliderCtn">
+                    <input type="range" min="1" max="90" step="1" value="1" id="slider">
+                    <input type="range" min="10" max="100" step="1" value="100" id="slider2">
+                </section>
+    
+                <section class = "botonesCtn">
+                    <button onclick="crearFoco()">Agregar Foco</button>
+                    <button onclick="eliminarUltimoFoco()" class = "btnEliminar">Eliminar ultimo foco</button>
+                </section>
+            </div>
+        </nav>
     </div>
-        
-        
-    <script src="./js/app.js"></script>
+
+    <script src="./scripts/app.js"></script>
 </body>
+
 </html>
