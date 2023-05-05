@@ -9,6 +9,12 @@ let minSectionBSize = Math.min(sectionB.offsetHeight, sectionB.offsetWidth);
 let todoFocos = document.querySelectorAll('.focus');
 let focosActivos = document.querySelectorAll('.active');
 let todoMiniFocos = document.querySelectorAll('.minifocus');
+const fileName = document.getElementById('fileName');
+
+const clipSvg = document.querySelector('.clip-svg');
+const mousePad = document.querySelector('.mousePad');
+const clipPath = document.querySelector("#myClip");// Obtén la referencia al clipPath
+const boton = document.getElementById('agregar-polygon');
 
 let mousePosition = {};
 let focoActivo;
@@ -51,6 +57,7 @@ slider.addEventListener('input', () => {
       focusElement.style.width = sliderValue;
       focusElement.style.height = sliderValue;
       focus.size = sliderValue;
+      
     }
   });
 });
@@ -97,44 +104,22 @@ imageInput.addEventListener('change', (e) => {
       sectionB.style.height = `${img.height}px`;// sectionB tiene el height de la imagen.
       sectionBWidth = sectionB.offsetWidth;
       sectionBHeight = sectionB.offsetHeight;
+ 
     };
+    todoFocos = document.querySelectorAll('.focus');
     todoFocos.forEach((element) => {
+      element.style.backgroundColor = "none";
       element.style.backgroundImage = `url(${event.target.result})`;//se carga la imagen como fondo para todos los focos.
       bgImage=event.target.result;
+      
     });
+    
+      clipSvg.style.backgroundImage = `url(${event.target.result})`;
+    
   };
   reader.readAsDataURL(file);
-
+  fileName.textContent = file.name;
 });
-
-
-
-//mantener fijo el backgroundimage cada vez que se desplaza SectionB (scroll)
-
-let scrollY = window.scrollY;
-// Función para actualizar la posición del clip-path en función del scroll
-function updateClipPath() {
-  let newScrollY = window.scrollY;
-  let pixelsMoved = newScrollY - scrollY;
-  
-  todoFocos.forEach((element) => {
-    let clipPathValues = element.style.clipPath.split(' ');
-    let clipPathTop = parseInt(clipPathValues[1]);
-    
-    if (pixelsMoved > 0) {
-      clipPathTop -= pixelsMoved;
-    } else {
-      clipPathTop = Math.min(0, clipPathTop - pixelsMoved);
-    }
-    
-    element.style.clipPath = `inset(${clipPathTop}px 0 0 0)`;
-  });
-
-  scrollY = newScrollY;
-}
-
-// Agregar un listener de scroll para actualizar el clip-path
-window.addEventListener('scroll', updateClipPath);
 
 //-------------------------
 
@@ -160,7 +145,7 @@ const dragFocos = (foco) => {
       y: e.pageY - foco.offsetTop
     };
     
-    foco.style.zIndex = 1;
+    //foco.style.zIndex = 2;
 
     const halfWidth = foco.offsetWidth / 2;
     const halfHeight = foco.offsetHeight / 2;
@@ -221,7 +206,7 @@ const dragFocos = (foco) => {
     };
  
     const mouseUpHandler = () => {
-      foco.style.zIndex = 0;
+      //foco.style.zIndex = 1;
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
     };
@@ -270,7 +255,7 @@ function crearFoco() {
   )
   focusCount++;
 
-  // Hacer el nuevo foco arrastrable y activable al hacer clic
+  // Hacer el nuevo foco arrastrable
   dragFocos(nuevoFoco);
   nuevoFoco.addEventListener('click', () => {
     ArrayFocusID.forEach(f => {
@@ -285,10 +270,32 @@ function crearFoco() {
     });
   });
   nuevoFoco.style.backgroundImage = `url(${bgImage})`;
-  
   todoFocos = document.querySelectorAll('.focus');
+  
 };
 
+//Activar el foco al hacer click
+for (let i = 0; i < todoFocos.length; i++) {
+  let foco = todoFocos[i];
+  foco.addEventListener('mousedown', function(e) {
+    // Agregar clase active y actualizar estado en el array
+    for (let j = 0; j < ArrayFocusID.length; j++) {
+      ArrayFocusID[j].status = false;
+      const otherFoco = document.getElementById(ArrayFocusID[j].id);
+      otherFoco.classList.remove('active');
+    }
+    let focoID = e.target.id;
+    let focoIndex = ArrayFocusID.findIndex(f => f.id === focoID);
+    ArrayFocusID[focoIndex].status = true;
+    foco.classList.add('active');
+    
+    // Almacenar la posición del mouse
+    let rect = foco.getBoundingClientRect();
+    let offsetX = e.clientX - rect.left;
+    let offsetY = e.clientY - rect.top;
+    mousePosition = { x: offsetX, y: offsetY };
+  });
+}
 
 //-------Eliminar ultimo Foco---
 function eliminarUltimoFoco(){
@@ -298,3 +305,55 @@ function eliminarUltimoFoco(){
   // Eliminar el elemento
   elemento.remove();
 }
+//----------------------------------------
+
+//----------Clip-path para mostrar mapa conocido--------
+function crearPolygon(){
+  clipSvg.style.filter = "blur(10px) grayscale(100%)";//desactiva boton al iniciar funcion
+  mousePad.style.zIndex = 6; //levanta el Zindex del pad
+  boton.disabled = true;
+  //crea un polygon sin medidas
+  const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+  polygon.setAttribute("points", "0,0 0,0 0,0 0,0");
+  clipPath.appendChild(polygon);
+
+  //declarando variables
+  let Xi = 0, Yi = 0, Xf = 0, Yf = 0; //Coordenadas de los vertices
+  let clickCounter = 0; //Contador de clicks. Solo se permiten 2 click: inicio y término
+
+  //Después de haber hecho el primer click, se obtiene en tiempo real las coordenadas del mouse.
+  function actualizarPar(e) {
+    if (clickCounter === 1) {
+      Xf = e.offsetX;
+      Yf = e.offsetY;
+    }
+  }
+  //mientras el mouse esté dentro del "mousePad", se actualizan los vertices del polygon
+  //mousepad es un elemento del tamaño del contenedor, es el area de efecto del mouse.
+  mousePad.addEventListener('mousemove', (e) => {
+    if (clickCounter === 1) {
+      if (e.target === mousePad) {
+        actualizarPar(e);
+        polygon.setAttribute("points", `${Xi},${Yi} ${Xf},${Yi} ${Xf},${Yf} ${Xi},${Yf}`);
+      }
+    }
+  });
+  //rastrea cuando se hace click dentro del "mousePad"
+  mousePad.addEventListener('click', (e) => {
+    if (clickCounter < 2) {
+      if (e.target === mousePad) {
+        if (clickCounter === 0) {
+          Xi = e.offsetX;
+          Yi = e.offsetY;
+        }
+        clickCounter++;
+        if (clickCounter ===2){
+          boton.disabled = false;
+          clipSvg.style.filter = "blur(5px) grayscale(60%)"; //regresa el blur inicial (ver CSS)
+          mousePad.style.zIndex = 3; //regresa al zindex inicial (ver CSS)
+
+        }
+      }
+    }
+  });
+};

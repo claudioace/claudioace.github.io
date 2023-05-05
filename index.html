@@ -4,44 +4,57 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fog of War v3</title>
+    <title>Fog of War v4</title>
     <link rel="stylesheet" href="./styles/styles.css">
 </head>
 <body>
-    <div class="sectionCtn" id = "granContenedor">
-        <main id = "sectionB">
-            <div id="foco0" class="focus active">
-                <!-- Se ignora Minifoco hasta resolver desplazamiento
-                <div id="minifoco0" class="focus minifocus active"></div>
-                -->
+    <table>
+        <tr>
+          <td>
+            <div id="sectionBCtn">
+              <div id="sectionB">
+                <div class="clip-svg"></div>
+                <div class="mousePad"></div>
+                <div id="foco0" class="focus active"></div>
             </div>
-
-        </main>
-        <aside id = "sectionAside"></aside><!--Este aside solo sirve para reservar el espacio del elemento fixed-->
-        <nav class="navbar flotante" id="sectionA">
-            <div class="flexCtn">
-                <section class = "cargarImgCtn">
-                    <label for="image-input" class="file-upload">
+            </div>
+          </td>
+          <td id = "sectionAside">
+            <nav class="navbar flotante" id="sectionA">
+                <div class="flexCtn">
+                  
+                    <section class = "cargarImgCtn">
+                      <label for="image-input" class="file-upload">
                         <span class="button">Seleccionar archivo</span>
-                        <span class="label">Ningún archivo seleccionado</span>
+                        <span class="label" id="fileName">Ningún archivo seleccionado</span>
                       </label>
                       <input type="file" accept="image/*" id="image-input" class="hidden-input">
-
-                </section>
-    
-                <section class = "sliderCtn">
-                    <input type="range" min="1" max="90" step="1" value="1" id="slider">
-                    <input type="range" min="10" max="100" step="1" value="100" id="slider2">
-                </section>
-    
-                <section class = "botonesCtn">
-                    <button onclick="crearFoco()">Agregar Foco</button>
-                    <button onclick="eliminarUltimoFoco()" class = "btnEliminar">Eliminar ultimo foco</button>
-                </section>
-            </div>
-        </nav>
-    </div>
-
+                    </section>
+        
+                    <section class = "sliderCtn">
+                      <input type="range" min="1" max="90" step="1" value="1" id="slider">
+                      <input type="range" min="10" max="100" step="1" value="100" id="slider2">
+                    </section>
+        
+                    <section class = "botonesCtn">
+                      <button onclick="crearPolygon()" id="agregar-polygon" >Revelar Mapa</button>
+                      <button onclick="crearFoco()">Agregar foco luz</button>
+                      <button onclick="eliminarUltimoFoco()" class = "btnEliminar">Eliminar último foco</button>
+                    </section>
+                </div>
+            </nav>
+          </td>
+        </tr>
+      </table>
+      
+      <!--crea un elemento SVG vacío. se usará para definir el clipPath-->
+      <svg width="0" height="0">
+        <defs>
+          <clipPath id="myClip">
+            <!--Insertar polygon con JS-->
+          </clipPath>
+        </defs>
+      </svg>
     <script src="./scripts/app.js"></script>
 </body>
 
